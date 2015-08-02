@@ -1,52 +1,46 @@
 (function($){
-  var _settings = {};
+  $.fn.dlm = function(method){
+    var options = $.fn.dlm.options;
 
-  var methods = {
-    /*
-     * init method
-     */
-    init: function(options){
-      var _defaultSettings = {
-        'token': 'pk.eyJ1IjoibWFwYm94IiwiYSI6IlhHVkZmaW8ifQ.hAMX5hSW-QnTeRCMAy9A8Q',
-        'mapId': 'mapbox.streets',
-        'view': [22.9870689,120.2735845],
-        'zoom': 11
-      };
-      _settings = $.extend(_defaultSettings, options);
+    var methods = {
+      init: function(options){
+        this.css({
+          'position': 'absolute',
+          'top': '0',
+          'bottom': '0',
+          'width': '100%'
+        });
+        var _defaultSettings = {
+          'token': 'pk.eyJ1IjoibWFwYm94IiwiYSI6IlhHVkZmaW8ifQ.hAMX5hSW-QnTeRCMAy9A8Q',
+          'mapId': 'mapbox.streets',
+          'view': [22.9870689,120.2735845],
+          'zoom': 11
+        };
+        return this.each(function(){
+          console.log("init");
+          $.fn.dlm.options = $.extend({}, _defaultSettings, options);
+        });
+      },
 
-      return this.each(function(){
-      });
-    },
+      show: function(){
+        return this.each(function(){
+          L.mapbox.accessToken = options.token;
+          var map = L.mapbox.map(this.id, options.mapId)
+            .setView(options.view, options.zoom);
+        });
+      }
+    };
 
-    /*
-     * show method
-     */
-    show: function(){
-      return this.each(function(){
-        L.mapbox.accessToken = _settings.token;
-        var map = L.mapbox.map(this.id, _settings.mapId)
-          .setView(_settings.view, _settings.zoom);
-      });
-    },
-
-    /*
-     * update method
-     */
-    update: function(options){
-      return this.each(function(){
-      });
-    }
-  };
-
-  $.fn.mapbox = function(method){
     if(methods[method]){
-      return methods[ method ].apply( this, Array.prototype.slice.call( arguments, 1 ));
+      return methods[method].apply(this, Array.prototype.slice.call(arguments, 1));
     } else if(typeof method === 'object' || !method){
-      return methods.init.apply( this, arguments );
+      return methods.init.apply(this, arguments);
     } else{
       $.error('Method ' + method + ' does not exist on jQuery.mapbox');
     }
   };
+
+  $.fn.dlm.options = {};
 })(jQuery);
 
 /*

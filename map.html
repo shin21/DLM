@@ -8,7 +8,7 @@
   <link href='https://api.tiles.mapbox.com/mapbox.js/v2.2.1/mapbox.css' rel='stylesheet' />
   
   <script src='./js/jquery-2.1.4.js'></script>
-  <script src="./js/map.js"></script>
+  <script src="./js/jquery.dlm.js"></script>
 
   <style>
     body { margin:0; padding:0; }
@@ -20,21 +20,14 @@
   <button id="right" style="z-index:100; position:absolute; top:10px; right:10px;">right</button>
   </div>
 
-  <div id='map'></div>
+  <div id='myMap'></div>
   <script type="text/javascript" charset="utf-8">
 
-    $('#map').css({
-      'position': 'absolute',
-      'top': '0',
-      'bottom': '0',
-      'width': '100%',
-    });
-    $('#map').mapbox({
+    $('#myMap').dlm({
       //'token': 'pk.eyJ1IjoieXNoaW5jMjEiLCJhIjoidGlBSzZEUSJ9.5Yq1DjgjbloJZe_TkJWVUA',
       'mapId': 'eleanor.ipncow29'
     });
-    $('#map').mapbox('update');
-    $('#map').mapbox('show');
+    $('#myMap').dlm('show');
   </script>
 </body>
 </html>
