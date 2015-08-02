@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset=utf-8 />
+  <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+
+  <script src='https://api.tiles.mapbox.com/mapbox.js/v2.2.1/mapbox.js'></script>
+  <link href='https://api.tiles.mapbox.com/mapbox.js/v2.2.1/mapbox.css' rel='stylesheet' />
+  
+  <script src='./js/jquery-2.1.4.js'></script>
+  <script src="./js/map.js"></script>
+
+  <style>
+    body { margin:0; padding:0; }
+  </style>
+</head>
+<body>
+  <div>
+  <button id="left" style="z-index:100; position:absolute; top:10px; right:100px;">left</button>
+  <button id="right" style="z-index:100; position:absolute; top:10px; right:10px;">right</button>
+  </div>
+
+  <div id='map'></div>
+  <script type="text/javascript" charset="utf-8">
+
+    $('#map').css({
+      'position': 'absolute',
+      'top': '0',
+      'bottom': '0',
+      'width': '100%',
+    });
+    $('#map').mapbox({
+      //'token': 'pk.eyJ1IjoieXNoaW5jMjEiLCJhIjoidGlBSzZEUSJ9.5Yq1DjgjbloJZe_TkJWVUA',
+      'mapId': 'eleanor.ipncow29'
+    });
+    $('#map').mapbox('update');
+    $('#map').mapbox('show');
+  </script>
+</body>
+</html>
+
+
