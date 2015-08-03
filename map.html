@@ -16,18 +16,30 @@
 </head>
 <body>
   <div>
-  <button id="left" style="z-index:100; position:absolute; top:10px; right:100px;">left</button>
-  <button id="right" style="z-index:100; position:absolute; top:10px; right:10px;">right</button>
+  <button id="previous" style="z-index:100; position:absolute; top:10px; right:100px;">previous</button>
+  <button id="next" style="z-index:100; position:absolute; top:10px; right:10px;">next</button>
   </div>
 
   <div id='myMap'></div>
   <script type="text/javascript" charset="utf-8">
+    var mapName = '0';
+    var get = location.search.split("?")[1].split("=");
+    if(get[0] != "mapName"){
+      alert("mapName not found!");
+    }
+    else{
+      mapName = get[1];
+    }
 
     $('#myMap').dlm({
       //'token': 'pk.eyJ1IjoieXNoaW5jMjEiLCJhIjoidGlBSzZEUSJ9.5Yq1DjgjbloJZe_TkJWVUA',
-      'mapId': 'eleanor.ipncow29'
+      'mapboxId': 'eleanor.ipncow29',
+      'mapName': mapName
     });
     $('#myMap').dlm('show');
+
+    document.getElementById("previous").addEventListener("click", function(){$('#myMap').dlm('previous')});
+    document.getElementById("next").addEventListener("click", function(){$('#myMap').dlm('next')});
   </script>
 </body>
 </html>
