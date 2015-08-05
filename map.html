@@ -9,6 +9,7 @@
   
   <script src='./js/jquery-2.1.4.js'></script>
   <script src="./js/jquery.dlm.js"></script>
+  <script src='./js/dirData.js'></script>
 
   <style>
     body { margin:0; padding:0; }
@@ -21,22 +22,25 @@
   </div>
 
   <div id='myMap'></div>
+
   <script type="text/javascript" charset="utf-8">
     var mapName = '0';
-    var get = location.search.split("?")[1].split("=");
-    if(get[0] != "mapName"){
-      alert("mapName not found!");
-    }
-    else{
-      mapName = get[1];
+    if(location.href.contains("?")){
+      var get = location.search.split("?")[1];
+      if(get != undefined && get.contains("=")){
+        get = get.split("=");
+        if(get[0] == "mapName")
+          mapName = get[1];
+      }
     }
 
     $('#myMap').dlm({
       //'token': 'pk.eyJ1IjoieXNoaW5jMjEiLCJhIjoidGlBSzZEUSJ9.5Yq1DjgjbloJZe_TkJWVUA',
       'mapboxId': 'eleanor.ipncow29',
+      'dirData': dirData,
       'mapName': mapName
     });
-    $('#myMap').dlm('show');
+    $('#myMap').dlm('test');
 
     document.getElementById("previous").addEventListener("click", function(){$('#myMap').dlm('previous')});
     document.getElementById("next").addEventListener("click", function(){$('#myMap').dlm('next')});

@@ -1,9 +1,9 @@
 (function($){
   $.fn.dlm = function(method){
-    if(this.data("target") == undefined){
-      this.data("target", 2);
-    }
 
+    /**
+     * public method
+     */
     function init($obj, options){
       $obj.css({
         'position': 'absolute',
@@ -16,24 +16,28 @@
         'mapboxId': 'mapbox.streets',
         'view': [22.9870689,120.2735845],
         'zoom': 11,
-        'mapName': '0'
+        'mapName': '0',
+        'dir': 'photo',
+        'dirData': [],
       };
 
+      $obj.data("target", 0);
       $.fn.dlm.options = $.extend({}, _defaultOptions, options);
     }
 
     function show($obj){
       var options = $.fn.dlm.options;
 
-      var points = _getPoints();
-
+      // set mapbox
       L.mapbox.accessToken = options.token;
       var map = L.mapbox.map($obj.attr('id'), options.mapboxId)
         .setView(options.view, options.zoom);
       $obj.data("map", map);
 
-      featureLayer = L.mapbox.featureLayer()
-        .setGeoJSON(points)
+      // set featurelayer
+      var geoJSONData = _getGeoJSONData($obj);
+      var featureLayer = L.mapbox.featureLayer()
+        .setGeoJSON(geoJSONData)
         .addTo($obj.data("map"));
       $obj.data("featureLayer", featureLayer);
 
@@ -41,27 +45,91 @@
     }
 
     function next($obj){
-      target = $obj.data("target");
-      target = (++target > 4) ? 4 : target;
+      var max = $obj.data("points").length - 1;
+      var target = $obj.data("target");
+      target = (++target > max) ? max : target;
       $obj.data("target", target);
       _change($obj, target);
     }
 
     function previous($obj){
-      target = $obj.data("target");
-      target = (--target < 1) ? 1 : target;
+      var min = -1;
+      var target = $obj.data("target");
+      target = (--target < min) ? min : target;
       $obj.data("target", target);
       _change($obj, target);
     }
 
+    function test($obj){
+      _getGeoJSONData($obj);
+    }
+
+    /**
+     * private method
+     */
     function _change($obj, i){
-      $obj.data("featureLayer").setFilter(function (f) {
-        return f.properties['myNo'] < i;
+      $obj.data("featureLayer").setFilter(function(p){
+        return p.properties['order'] <= i;
       });
       console.log("target: " + i);
     }
 
-    function _getPoints() {
+    function _getGeoJSONData($obj){
+      var pointsList = _getDataList($obj, "dir", $.fn.dlm.options.mapName);
+      console.log(pointsList);
+      console.log("============");
+      var pointsList = _getDataList($obj, "image", pointsList[0]);
+      console.log(pointsList);
+
+      if(pointsList == [])
+        return [];
+      return [];
+    }
+
+    function _getDataList($obj, want, where){
+      if(typeof want == "undefined"){
+        $.error("undefined \"want\" in _getDataList.");
+        return [];
+      }
+      var retData = [];
+      var dirData = $.fn.dlm.options.dirData;
+
+      for(var key in dirData){
+        var addr = dirData[key].split("/");
+        var lastName = addr[addr.length-1];
+
+        // check first address
+        if(key == 0){
+          if(lastName != $.fn.dlm.options.dir){
+            alert("Your location of dirData is: " + lastName + "\nPlease modify it to: " + $.fn.dlm.options.dir);
+            return [];
+          }
+          else
+            continue;
+        }
+
+        // find image filetype
+        if(lastName.match(/\.(jpg|png|bmp|gif)/gi)){
+          if(want == "image" && addr[addr.length-3] == $.fn.dlm.options.mapName)
+            _pushData(retData, addr, want, where);
+        }
+        else{
+          if(want == "dir")
+            _pushData(retData, addr, want, where);
+        }
+      }
+      return retData;
+    }
+
+    function _pushData(retData, addr, want, where){
+      var lastName = addr[addr.length-1];
+      if(want == "image")
+        lastName = addr[addr.length-2] + "/" + lastName;
+      if(addr[addr.length-2] == where || typeof where == "undefined" || where == "0")
+        retData.push(lastName);
+    }
+
+    function _getPoints($obj){
       var points = [
         {
           "type": "Feature",
@@ -75,7 +143,7 @@
             "marker-color": "#fc4353",
             "marker-size": "large",
             "marker-symbol": "monument",
-            "myNo": 1
+            "order": 0
           }
         },
         {
@@ -90,7 +158,7 @@
             "marker-color": "#fc4300",
             "marker-size": "large",
             "marker-symbol": "hospital",
-            "myNo": 2
+            "order": 1
           }
         },
         {
@@ -103,10 +171,11 @@
             "marker-color": "#fc4300",
             "marker-size": "large",
             "marker-symbol": "bus",
-            "myNo": 3
+            "order": 2
           }
         }
       ];
+
       return points;
     }
 
@@ -139,6 +208,13 @@
         return this.each(function(){
           console.log("previous function");
           previous($(this));
+        });
+      },
+
+      test: function() {
+        return this.each(function(){
+          console.log("test function");
+          test($(this));
         });
       }
     };

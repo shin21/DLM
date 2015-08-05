@@ -15,6 +15,7 @@ DLM!?!?!?!?!?
 
 首頁
     http://codyhouse.co/demo/page-scroll-effects/opacity-hijacking.html
+    營火
 
     整頁換頁效果
     http://alvarotrigo.com/pagePiling/#page2
@@ -37,3 +38,19 @@ DLM!?!?!?!?!?
 初始頁面可以在這邊找
 http://dotcreativestudio.com/inspire/inspire/jquery-plugin/
 看到第三頁
+
+default:
+	map style
+	where location(NCKU + random)
+	dir read by windows or linux
+
+### getDirData.bat
+
+dir.js 修改成 dirData.js
+dir[] -> dirData[]
+
+### feature work
+
+- photo 位置可以是別的地方
+- 除了照片之外還可以有文字介紹
+- mapName == 0: 讀 ./photo/ 底下的資料夾當作 point，而非 ./photo/0/
