@@ -277,10 +277,10 @@ set scrolloff=3
 set shiftwidth=4
 set softtabstop=4
 set suffixes=.bak,~,.swp,.o,.info,.aux,.log,.dvi,.bbl,.blg,.brf,.cb,.ind,.idx,.ilg,.inx,.out,.toc
+set noswapfile
 set tabstop=4
 set undodir=~/.vim/dirs/undos
 set undofile
-set updatetime=200
 set viminfo='100,<50,s10,h,n~/.vim/dirs/viminfo
 set wildmode=list:longest
 let s:so_save = &so | let s:siso_save = &siso | set so=0 siso=0
@@ -291,11 +291,13 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
   let s:wipebuf = bufnr('%')
 endif
 set shortmess=aoO
-badd +0 map.html
+badd +1 map.html
 badd +59 js/map.js
 badd +489 ~/.vim/bundle/vim-snippets/snippets/javascript/javascript-jquery.snippets
-badd +243 ~/.vim/bundle/vim-snippets/snippets/javascript/javascript.snippets
-badd +0 js/jquery.dlm.js
+badd +225 ~/.vim/bundle/vim-snippets/snippets/javascript/javascript.snippets
+badd +84 js/jquery.dlm.js
+badd +1 js/dir.js
+badd +1 js/dirData.js
 args map.html
 edit map.html
 set splitbelow splitright
@@ -414,12 +416,12 @@ setlocal nowinfixwidth
 setlocal wrap
 setlocal wrapmargin=0
 silent! normal! zE
-let s:l = 36 - ((34 * winheight(0) + 31) / 62)
+let s:l = 12 - ((3 * winheight(0) + 31) / 62)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-36
-normal! 021|
+12
+normal! 025|
 tabedit js/jquery.dlm.js
 set splitbelow splitright
 set nosplitbelow
@@ -537,168 +539,12 @@ setlocal nowinfixwidth
 setlocal wrap
 setlocal wrapmargin=0
 silent! normal! zE
-let s:l = 75 - ((49 * winheight(0) + 31) / 62)
+let s:l = 64 - ((3 * winheight(0) + 31) / 62)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-75
-normal! 040|
-tabedit ~/.vim/bundle/vim-snippets/snippets/javascript/javascript.snippets
-set splitbelow splitright
-set nosplitbelow
-set nosplitright
-wincmd t
-set winheight=1 winwidth=1
-argglobal
-xnoremap <buffer> <silent> \a} `>a}`<i{
-xnoremap <buffer> <silent> \a{ `>a}`<i{
-xnoremap <buffer> <silent> \a) `>a)`<i(
-xnoremap <buffer> <silent> \a( `>a)`<i(
-xnoremap <buffer> <silent> \a' `>a'`<i'
-xnoremap <buffer> <silent> \a] `>a]`<i[
-xnoremap <buffer> <silent> \a[ `>a]`<i[
-xnoremap <buffer> <silent> \a" `>a"`<i"
-xnoremap <buffer> <silent> \a` `>a``<i`
-setlocal keymap=
-setlocal noarabic
-setlocal noautoindent
-setlocal nobinary
-setlocal bufhidden=
-setlocal buflisted
-setlocal buftype=
-setlocal nocindent
-setlocal cinkeys=0{,0},0),:,0#,!^F,o,O,e
-setlocal cinoptions=
-setlocal cinwords=if,else,while,do,for,switch
-setlocal colorcolumn=
-setlocal comments=s1:/*,mb:*,ex:*/,://,b:#,:%,:XCOMM,n:>,fb:-
-setlocal commentstring=#\ %s
-setlocal complete=.,w,b,u,t,i
-setlocal concealcursor=
-setlocal conceallevel=0
-setlocal completefunc=neocomplcache#complete#manual_complete
-setlocal nocopyindent
-setlocal cryptmethod=
-setlocal nocursorbind
-setlocal nocursorcolumn
-setlocal nocursorline
-setlocal define=
-setlocal dictionary=
-setlocal nodiff
-setlocal equalprg=
-setlocal errorformat=
-setlocal noexpandtab
-if &filetype != 'snippets'
-setlocal filetype=snippets
-endif
-setlocal foldcolumn=0
-setlocal foldenable
-setlocal foldexpr=getline(v:lnum)!~'^\\t\\|^$'?'>1':1
-setlocal foldignore=#
-setlocal foldlevel=0
-setlocal foldmarker={{{,}}}
-setlocal foldmethod=expr
-setlocal foldminlines=1
-setlocal foldnestmax=20
-setlocal foldtext=foldtext()
-setlocal formatexpr=
-setlocal formatoptions=tcq
-setlocal formatlistpat=^\\s*\\d\\+[\\]:.)}\\t\ ]\\s*
-setlocal grepprg=
-setlocal iminsert=0
-setlocal imsearch=0
-setlocal include=
-setlocal includeexpr=
-setlocal indentexpr=GetSnippetIndent()
-setlocal indentkeys=!^F,o,O,=snippet,=version,=extends
-setlocal noinfercase
-setlocal iskeyword=@,48-57,_,192-255
-setlocal keywordprg=
-setlocal nolinebreak
-setlocal nolisp
-setlocal nolist
-setlocal makeprg=
-setlocal matchpairs=(:),{:},[:]
-setlocal modeline
-setlocal modifiable
-setlocal nrformats=octal,hex
-set number
-setlocal number
-setlocal numberwidth=4
-setlocal omnifunc=
-setlocal path=
-setlocal nopreserveindent
-setlocal nopreviewwindow
-setlocal quoteescape=\\
-setlocal noreadonly
-setlocal norelativenumber
-setlocal norightleft
-setlocal rightleftcmd=search
-setlocal noscrollbind
-setlocal shiftwidth=4
-setlocal noshortname
-setlocal nosmartindent
-setlocal softtabstop=0
-setlocal nospell
-setlocal spellcapcheck=[.?!]\\_[\\])'\"\	\ ]\\+
-setlocal spellfile=
-setlocal spelllang=en
-setlocal statusline=%!airline#statusline(1)
-setlocal suffixesadd=
-setlocal swapfile
-setlocal synmaxcol=3000
-if &syntax != 'snippets'
-setlocal syntax=snippets
-endif
-setlocal tabstop=4
-setlocal tags=
-setlocal textwidth=0
-setlocal thesaurus=
-setlocal undofile
-setlocal nowinfixheight
-setlocal nowinfixwidth
-setlocal wrap
-setlocal wrapmargin=0
-1
-normal! zo
-4
-normal! zo
-9
-normal! zo
-14
-normal! zo
-19
-normal! zo
-24
-normal! zo
-29
-normal! zo
-34
-normal! zo
-43
-normal! zo
-197
-normal! zo
-202
-normal! zo
-204
-normal! zo
-207
-normal! zo
-231
-normal! zo
-234
-normal! zo
-240
-normal! zo
-241
-normal! zo
-let s:l = 225 - ((167 * winheight(0) + 31) / 62)
-if s:l < 1 | let s:l = 1 | endif
-exe s:l
-normal! zt
-225
-normal! 01|
+64
+normal! 0
 tabnext 2
 if exists('s:wipebuf')
   silent exe 'bwipe ' . s:wipebuf

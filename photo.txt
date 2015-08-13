@@ -54,3 +54,5 @@ dir[] -> dirData[]
 - photo 位置可以是別的地方
 - 除了照片之外還可以有文字介紹
 - mapName == 0: 讀 ./photo/ 底下的資料夾當作 point，而非 ./photo/0/
+- _getDataList 效能不好，每次拿照片都要遍例一次全部，要改成 return 一個 array 就好
+

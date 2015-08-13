@@ -28,6 +28,8 @@
     function show($obj){
       var options = $.fn.dlm.options;
 
+      var geoJSONData = _getGeoJSONData($obj);
+
       // set mapbox
       L.mapbox.accessToken = options.token;
       var map = L.mapbox.map($obj.attr('id'), options.mapboxId)
@@ -45,7 +47,7 @@
     }
 
     function next($obj){
-      var max = $obj.data("points").length - 1;
+      var max = $obj.data("pointsNum") - 1;
       var target = $obj.data("target");
       target = (++target > max) ? max : target;
       $obj.data("target", target);
@@ -61,47 +63,59 @@
     }
 
     function test($obj){
-      _getGeoJSONData($obj);
-    }
-
-    /**
-     * private method
-     */
-    function _change($obj, i){
-      $obj.data("featureLayer").setFilter(function(p){
-        return p.properties['order'] <= i;
-      });
-      console.log("target: " + i);
-    }
-
-    function _getGeoJSONData($obj){
+      /*
       var pointsList = _getDataList($obj, "dir", $.fn.dlm.options.mapName);
       console.log(pointsList);
       console.log("============");
       var pointsList = _getDataList($obj, "image", pointsList[0]);
       console.log(pointsList);
+      console.log("============");
+      var pointsList = _getDataList($obj, "mapName");
+      console.log(pointsList);
+      */
+    }
 
-      if(pointsList == [])
-        return [];
-      return [];
+    /**
+     * private method
+     */
+
+    // _change
+    function _change($obj, i){
+      $obj.data("featureLayer").setFilter(function(p){
+        return p.order <= i;
+      });
+      console.log("target: " + i);
+    }
+
+    // _getGeoJSONData
+    function _getGeoJSONData($obj){
+      var pointsList = _getDataList($obj, "dir", $.fn.dlm.options.mapName);
+      var json = [];
+      for(var i in pointsList){
+        json.push(_getGeoJSONPoint($obj, pointsList[i], parseInt(i)));
+      }
+      
+      $obj.data("pointsNum", json.length);
+      console.log(json);
+      return json;
     }
 
     function _getDataList($obj, want, where){
-      if(typeof want == "undefined"){
-        $.error("undefined \"want\" in _getDataList.");
+      if($.inArray(want, ["dir", "image", "mapName"]) <= -1){
+        $.error("undefined \"want\": " + want + " in _getDataList.");
         return [];
       }
       var retData = [];
-      var dirData = $.fn.dlm.options.dirData;
+      var options = $.fn.dlm.options;
 
-      for(var key in dirData){
-        var addr = dirData[key].split("/");
+      for(var key in options.dirData){
+        var addr = options.dirData[key].split("/");
         var lastName = addr[addr.length-1];
 
         // check first address
         if(key == 0){
-          if(lastName != $.fn.dlm.options.dir){
-            alert("Your location of dirData is: " + lastName + "\nPlease modify it to: " + $.fn.dlm.options.dir);
+          if(lastName != options.dir){
+            alert("Your location of dirData is: " + lastName + "\nPlease modify it to: " + options.dir);
             return [];
           }
           else
@@ -110,11 +124,11 @@
 
         // find image filetype
         if(lastName.match(/\.(jpg|png|bmp|gif)/gi)){
-          if(want == "image" && addr[addr.length-3] == $.fn.dlm.options.mapName)
+          if(want == "image" && addr[addr.length-3] == options.mapName)
             _pushData(retData, addr, want, where);
         }
         else{
-          if(want == "dir")
+          if($.inArray(want, ["dir", "mapName"]) > -1)
             _pushData(retData, addr, want, where);
         }
       }
@@ -125,58 +139,54 @@
       var lastName = addr[addr.length-1];
       if(want == "image")
         lastName = addr[addr.length-2] + "/" + lastName;
-      if(addr[addr.length-2] == where || typeof where == "undefined" || where == "0")
+      if((want == "image" && addr[addr.length-2] == where) ||
+          (want == "dir" && (addr[addr.length-2] == where || typeof where == "undefined")) ||
+          (want == "mapName" && addr[addr.length-2] == $.fn.dlm.options.dir) ||
+          where == "0")
         retData.push(lastName);
     }
 
-    function _getPoints($obj){
-      var points = [
-        {
-          "type": "Feature",
-          "geometry": {
-            "type": "Point",
-            "coordinates": [120.2, 22.95]
-          },
-          "properties": {
-            "title": "Mapbox DC",
-            "description": "1714 14th St NW, Washington DC",
-            "marker-color": "#fc4353",
-            "marker-size": "large",
-            "marker-symbol": "monument",
-            "order": 0
-          }
-        },
-        {
-          "type": "Feature",
-          "geometry": {
-            "type": "Point",
-            "coordinates": [120.3, 22.95]
-          },
-          "properties": {
-            "title": "Mapbox DC",
-            "description": "1714 14th St NW, Washington DC",
-            "marker-color": "#fc4300",
-            "marker-size": "large",
-            "marker-symbol": "hospital",
-            "order": 1
-          }
-        },
-        {
-          "type": "Feature",
-          "geometry": {
-            "type": "Point",
-            "coordinates": [120.4, 22.95]
-          },
-          "properties": {
-            "marker-color": "#fc4300",
-            "marker-size": "large",
-            "marker-symbol": "bus",
-            "order": 2
-          }
-        }
-      ];
+    function _getGeoJSONPoint($obj, point, order){
+      var imgList = _getDataList($obj, "image", point);
+      var ptrArr = _splitLast(point, "-");
+      var coor = _splitLast(ptrArr[1], ",");
 
-      return points;
+      if(coor[0] == "" | coor[1] == ""){
+        coor[0] = 22.9996873 + Math.random()/800;
+        coor[1] = 120.2180947 + Math.random()/800;
+      }
+
+      var point = {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [parseFloat(coor[1]), parseFloat(coor[0])]
+        },
+        "properties": {
+          "title": ptrArr[0],
+          "description": point,
+          "marker-color": "#fc4353",
+          "marker-size": "large",
+          "marker-symbol": "monument"
+        },
+        "order": order
+      };
+
+      return point;
+    }
+
+    function _splitLast(string, seperator){
+      var ret = [];
+      var a = string.split(seperator);
+
+      head = "";
+      for(var i = 0; i < a.length-1; i++){
+        head = head.concat(a[i], seperator);
+      }
+      ret.push(head.substring(0, head.length-1));
+      ret.push(a[a.length-1]);
+
+      return ret;
     }
 
     /**

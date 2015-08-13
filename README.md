@@ -21,6 +21,6 @@
 要放在 ./photo/ 底下
 
 注意照片只支援 jpg png bmp
-
+注意資料夾名稱不能有空白
 執行 getDir.bat (getDir.sh)
 

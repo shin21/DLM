@@ -5,7 +5,7 @@ echo loading ./photo/ . . .
 file=./js/dirData.js
 echo dirData = [ > $file
 
-d=`find ./photo/ -type d`
+d=`find ./photo/ -type d | sort`
 for i in $d
 do
     echo $i | grep -qE "/$"
@@ -20,7 +20,7 @@ do
     fi
 done
 
-f=`find ./photo/ -type f`
+f=`find ./photo/ -type f | sort`
 for i in $f
 do
     echo \"$i\", >> $file
