@@ -9,7 +9,8 @@
         'position': 'absolute',
         'top': '0',
         'bottom': '0',
-        'width': '100%'
+        'width': '100%',
+        'z-index': 1
       });
       var _defaultOptions = {
         'token': 'pk.eyJ1IjoibWFwYm94IiwiYSI6IlhHVkZmaW8ifQ.hAMX5hSW-QnTeRCMAy9A8Q',
@@ -19,6 +20,7 @@
         'mapName': '0',
         'dir': 'photo',
         'dirData': [],
+        'infoId': 'info'
       };
 
       $obj.data("target", 0);
@@ -27,8 +29,6 @@
 
     function show($obj){
       var options = $.fn.dlm.options;
-
-      var geoJSONData = _getGeoJSONData($obj);
 
       // set mapbox
       L.mapbox.accessToken = options.token;
@@ -41,6 +41,7 @@
       var featureLayer = L.mapbox.featureLayer()
         .setGeoJSON(geoJSONData)
         .addTo($obj.data("map"));
+      _addImages(options, map, featureLayer);
       $obj.data("featureLayer", featureLayer);
 
       _change($obj, $obj.data("target"));
@@ -100,6 +101,27 @@
       return json;
     }
 
+    // _addImages
+    function _addImages(options, map, featureLayer){
+      featureLayer.on('click',function(e){
+        e.layer.closePopup();
+
+        var info = document.getElementById(options.infoId);
+        var feature = e.layer.feature;
+        var content = '<strong>' + feature.properties.title + '</strong>' +
+        '<p>' + feature.properties.description + '</p>';
+
+        info.innerHTML = content;
+        $(info).fadeIn();
+
+      });
+
+      map.on('move', function(e){
+        var info = document.getElementById(options.infoId);
+        $(info).fadeOut();
+      });
+    }
+
     function _getDataList($obj, want, where){
       if($.inArray(want, ["dir", "image", "mapName"]) <= -1){
         $.error("undefined \"want\": " + want + " in _getDataList.");
@@ -141,8 +163,8 @@
         lastName = addr[addr.length-2] + "/" + lastName;
       if((want == "image" && addr[addr.length-2] == where) ||
           (want == "dir" && (addr[addr.length-2] == where || typeof where == "undefined")) ||
-          (want == "mapName" && addr[addr.length-2] == $.fn.dlm.options.dir) ||
-          where == "0")
+          (want == "mapName" && addr[addr.length-2] == $.fn.dlm.options.dir)
+        )
         retData.push(lastName);
     }
 
@@ -169,6 +191,7 @@
           "marker-size": "large",
           "marker-symbol": "monument"
         },
+        "imgList": imgList,
         "order": order
       };
 

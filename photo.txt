@@ -3,16 +3,6 @@ http://visionwidget.com/free-jquery-photo-gallery-albums-with-tutorials.html
 http://www.vandelaydesign.com/jquery-image-galleries/
 
 
-iot proxy?
-
-DLM!?!?!?!?!?
-	先找 我要怎麼呈現照片？
-		翻書
-		
-	py2exe
-	implement
-
-
 首頁
     http://codyhouse.co/demo/page-scroll-effects/opacity-hijacking.html
     營火
@@ -43,11 +33,6 @@ default:
 	map style
 	where location(NCKU + random)
 	dir read by windows or linux
-
-### getDirData.bat
-
-dir.js 修改成 dirData.js
-dir[] -> dirData[]
 
 ### feature work
 
