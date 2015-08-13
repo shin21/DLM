@@ -103,62 +103,61 @@
 
     // _showImgHandler
     function _showImgHandler(options, map, featureLayer){
+      // when click a marker
       featureLayer.on("click",function(e){
         e.layer.closePopup();
 
         var info = document.getElementById(options.infoId);
-        $(info).fadeOut();
 
+        // find images of new point(marker)
+        var imgs = [];
         var feature = e.layer.feature;
         for(var i in feature.imgList){
-          console.log(feature.imgList[i]);
+          imgSrc = "./" + options.dir + "/" + options.mapName + "/" + feature.imgList[i];
+          imgs.push({
+            title: feature.imgList[i].split("/")[1],
+            thumb: imgSrc,
+            img: imgSrc
+          });
         }
 
-        // TODO: study parameters
-        // http://www.tn3gallery.com/parameters/
-        // then for each img, add to tn3 and display
+        // build tn3
         var $mytn3 = $(".info").tn3({
-          skinDir:"skins",
-          imageClick:"fullscreen",
-          image:{
-            maxZoom:1.5,
-            crop:true,
-            clickEvent:"dblclick",
-            transitions:[{
-              type:"blinds"
-              },{
-              type:"grid"
-              },{
-              type:"grid",
-              duration:460,
-              easing:"easeInQuad",
-              gridX:1,
-              gridY:8,
-              // flat, diagonal, circle, random
-              sort:"random",
-              sortReverse:false,
-              diagonalStart:"bl",
-              // fade, scale
-              method:"scale",
-              partDuration:360,
-              partEasing:"easeOutSine",
-              partDirection:"left"
-            }]
+          skinDir: "skins",
+          delay: 2000,
+          image: {
+            maxZoom: 1.5,
+            crop: true,
+            clickEvent: "click",
+            transitions: [
+              {
+                type: "blinds",
+              },
+              {
+                type: "grid"
+              },
+              {
+                type: "grid",
+                duration: 460,
+                easing: "easeInQuad",
+                gridX: 1,
+                gridY: 8,
+                // flat, diagonal, circle, random
+                sort: "random",
+                sortReverse: false,
+                diagonalStart: "bl",
+                // fade, scale
+                method: "scale",
+                partDuration: 360,
+                partEasing: "easeOutSine",
+                partDirection: "left"
+              }
+            ]
           },
 
-          init_start:function(e) {
+          init_start: function(e) {
             e.source.data = [{
-                title: "My Album",
-                thumb: "./photo/1/2014-onepiece-22.9931668,120.1430514/ffhxlgjixt7tckss6d3l.jpg",
-                imgs: [{
-                    title: "Image One",
-                    thumb: "./photo/1/2014-onepiece-22.9931668,120.1430514/ffhxlgjixt7tckss6d3l.jpg",
-                    img: "./photo/1/2014-onepiece-22.9931668,120.1430514/ffhxlgjixt7tckss6d3l.jpg"
-                }, {
-                    title: "Image Two",
-                    thumb: "./photo/1/2014-onepiece-22.9931668,120.1430514/3561953-6157147575-2013-.jpg",
-                    img: "./photo/1/2014-onepiece-22.9931668,120.1430514/3561953-6157147575-2013-.jpg"
-                }]
+              imgs: imgs
             }];
           }
         }).data("tn3");
@@ -166,6 +165,7 @@
         $(info).fadeIn("slow");
       });
 
+      // when touch other place
       map.on("click", function(){
         var info = document.getElementById(options.infoId);
         $(info).fadeOut();
