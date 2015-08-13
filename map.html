@@ -2,68 +2,85 @@
 <html>
 <head>
   <meta charset=utf-8 />
-  <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+  <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
 
-  <script src='https://api.tiles.mapbox.com/mapbox.js/v2.2.1/mapbox.js'></script>
-  <link href='https://api.tiles.mapbox.com/mapbox.js/v2.2.1/mapbox.css' rel='stylesheet' />
+  <script src="https://api.tiles.mapbox.com/mapbox.js/v2.2.1/mapbox.js"></script>
+  <link href="https://api.tiles.mapbox.com/mapbox.js/v2.2.1/mapbox.css" rel="stylesheet" />
   
-  <script src='./js/jquery-2.1.4.js'></script>
+  <script src="./js/jquery-2.1.4.js"></script>
   <script src="./js/jquery.dlm.js"></script>
-  <script src='./js/dirData.js'></script>
+  <script src="./js/dirData.js"></script>
+
+
+  <link type="text/css" rel="stylesheet" href="./skins/tn3/tn3.css"></link>
+  <script type="text/javascript" src="js/jquery.tn3lite.min.js"></script>
 
   <style>
-    body { margin:0; padding:0; }
+    body{
+      margin:0;
+      padding:0;
+    }
 
-
-    .info {
-      z-index: 101;
+    .info{
+      z-index: 100;
       position:absolute;
       top:100px;
       right:10px;
-      background:#f0f;
     }
-    /*
-    .info div {
-      z-index: 101;
-      background:#fff;
-      padding:10px;
-      border-radius:3px;
+
+    .button{
+      z-index:100;
+      position:absolute;
     }
-    */
+
+    #previous{
+      top:10px;
+      right:100px;
+    }
+    #next{
+      top:10px;
+      right:20px;
+    }
+
   </style>
 </head>
 <body>
-  <div>
-  <button id="previous" style="z-index:100; position:absolute; top:10px; right:100px;">previous</button>
-  <button id="next" style="z-index:100; position:absolute; top:10px; right:10px;">next</button>
+  <button id="previous" class="button">previous</button>
+  <button id="next" class="button">next</button>
+
+  <div id="myMap"></div>
+  <div id="info" class="info">
   </div>
 
-  <div id='myMap'></div>
-  <div id='info' class='info'></div>
-
   <script type="text/javascript" charset="utf-8">
-    var mapName = '0';
-    if(location.href.contains("?")){
-      var get = location.search.split("?")[1];
-      if(get != undefined && get.contains("=")){
-        get = get.split("=");
-        if(get[0] == "mapName")
-          mapName = get[1];
+    $(document).ready(function(){
+      var mapName = "0";
+      if(location.href.contains("?")){
+        var get = location.search.split("?")[1];
+        if(get != undefined && get.contains("=")){
+          get = get.split("=");
+          if(get[0] == "mapName")
+            mapName = get[1];
+        }
       }
-    }
 
-    $('#myMap').dlm({
-      //'token': 'pk.eyJ1IjoieXNoaW5jMjEiLCJhIjoidGlBSzZEUSJ9.5Yq1DjgjbloJZe_TkJWVUA',
-      'mapboxId': 'eleanor.ipncow29',
-      'dirData': dirData,
-      'mapName': mapName
+      $("#myMap").dlm({
+        //"token": "pk.eyJ1IjoieXNoaW5jMjEiLCJhIjoidGlBSzZEUSJ9.5Yq1DjgjbloJZe_TkJWVUA",
+        "mapboxId": "eleanor.ipncow29",
+        "dirData": dirData,
+        "mapName": mapName
+      });
+      $("#myMap").dlm("show");
+
+      var $mytn3 = $(".info").tn3({
+        init_start:function(e){}
+      }).data("tn3");
+      $("#info").fadeOut();
     });
-    $('#myMap').dlm('show');
 
-    document.getElementById("previous").addEventListener("click", function(){$('#myMap').dlm('previous')});
-    document.getElementById("next").addEventListener("click", function(){$('#myMap').dlm('next')});
+    document.getElementById("previous").addEventListener("click", function(){$("#myMap").dlm("previous")});
+    document.getElementById("next").addEventListener("click", function(){$("#myMap").dlm("next")});
   </script>
 </body>
 </html>
-
 

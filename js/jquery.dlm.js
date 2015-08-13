@@ -6,21 +6,21 @@
      */
     function init($obj, options){
       $obj.css({
-        'position': 'absolute',
-        'top': '0',
-        'bottom': '0',
-        'width': '100%',
-        'z-index': 1
+        "position": "absolute",
+        "top": "0",
+        "bottom": "0",
+        "width": "100%",
+        "z-index": 1
       });
       var _defaultOptions = {
-        'token': 'pk.eyJ1IjoibWFwYm94IiwiYSI6IlhHVkZmaW8ifQ.hAMX5hSW-QnTeRCMAy9A8Q',
-        'mapboxId': 'mapbox.streets',
-        'view': [22.9870689,120.2735845],
-        'zoom': 11,
-        'mapName': '0',
-        'dir': 'photo',
-        'dirData': [],
-        'infoId': 'info'
+        "token": "pk.eyJ1IjoibWFwYm94IiwiYSI6IlhHVkZmaW8ifQ.hAMX5hSW-QnTeRCMAy9A8Q",
+        "mapboxId": "mapbox.streets",
+        "view": [22.9870689,120.2735845],
+        "zoom": 11,
+        "mapName": "0",
+        "dir": "photo",
+        "dirData": [],
+        "infoId": "info"
       };
 
       $obj.data("target", 0);
@@ -32,7 +32,7 @@
 
       // set mapbox
       L.mapbox.accessToken = options.token;
-      var map = L.mapbox.map($obj.attr('id'), options.mapboxId)
+      var map = L.mapbox.map($obj.attr("id"), options.mapboxId)
         .setView(options.view, options.zoom);
       $obj.data("map", map);
 
@@ -41,7 +41,7 @@
       var featureLayer = L.mapbox.featureLayer()
         .setGeoJSON(geoJSONData)
         .addTo($obj.data("map"));
-      _addImages(options, map, featureLayer);
+      _showImgHandler(options, map, featureLayer);
       $obj.data("featureLayer", featureLayer);
 
       _change($obj, $obj.data("target"));
@@ -101,22 +101,72 @@
       return json;
     }
 
-    // _addImages
-    function _addImages(options, map, featureLayer){
-      featureLayer.on('click',function(e){
+    // _showImgHandler
+    function _showImgHandler(options, map, featureLayer){
+      featureLayer.on("click",function(e){
         e.layer.closePopup();
 
         var info = document.getElementById(options.infoId);
+        $(info).fadeOut();
+
         var feature = e.layer.feature;
-        var content = '<strong>' + feature.properties.title + '</strong>' +
-        '<p>' + feature.properties.description + '</p>';
+        for(var i in feature.imgList){
+          console.log(feature.imgList[i]);
+        }
 
-        info.innerHTML = content;
-        $(info).fadeIn();
+        // TODO: study parameters
+        // http://www.tn3gallery.com/parameters/
+        // then for each img, add to tn3 and display
+        var $mytn3 = $(".info").tn3({
+          skinDir:"skins",
+          imageClick:"fullscreen",
+          image:{
+            maxZoom:1.5,
+            crop:true,
+            clickEvent:"dblclick",
+            transitions:[{
+              type:"blinds"
+              },{
+              type:"grid"
+              },{
+              type:"grid",
+              duration:460,
+              easing:"easeInQuad",
+              gridX:1,
+              gridY:8,
+              // flat, diagonal, circle, random
+              sort:"random",
+              sortReverse:false,
+              diagonalStart:"bl",
+              // fade, scale
+              method:"scale",
+              partDuration:360,
+              partEasing:"easeOutSine",
+              partDirection:"left"
+            }]
+          },
 
+          init_start:function(e) {
+            e.source.data = [{
+                title: "My Album",
+                thumb: "./photo/1/2014-onepiece-22.9931668,120.1430514/ffhxlgjixt7tckss6d3l.jpg",
+                imgs: [{
+                    title: "Image One",
+                    thumb: "./photo/1/2014-onepiece-22.9931668,120.1430514/ffhxlgjixt7tckss6d3l.jpg",
+                    img: "./photo/1/2014-onepiece-22.9931668,120.1430514/ffhxlgjixt7tckss6d3l.jpg"
+                }, {
+                    title: "Image Two",
+                    thumb: "./photo/1/2014-onepiece-22.9931668,120.1430514/3561953-6157147575-2013-.jpg",
+                    img: "./photo/1/2014-onepiece-22.9931668,120.1430514/3561953-6157147575-2013-.jpg"
+                }]
+            }];
+          }
+        }).data("tn3");
+
+        $(info).fadeIn("slow");
       });
 
-      map.on('move', function(e){
+      map.on("click", function(){
         var info = document.getElementById(options.infoId);
         $(info).fadeOut();
       });
@@ -255,11 +305,11 @@
     if(methods[method]){
       return methods[method].apply(this, Array.prototype.slice.call(arguments, 1));
     }
-    else if(typeof method === 'object' || !method){
+    else if(typeof method === "object" || !method){
       return methods.init.apply(this, arguments);
     }
     else{
-      $.error('Method ' + method + ' does not exist on jQuery.mapbox');
+      $.error("Method " + method + " does not exist on jQuery.mapbox");
     }
   };
 })(jQuery);
