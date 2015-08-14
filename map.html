@@ -53,20 +53,27 @@
   </div>
 
   <script type="text/javascript" charset="utf-8">
-    $(document).ready(function(){
-      var mapName = "0";
-      if(location.href.contains("?")){
-        var get = location.search.split("?")[1];
-        if(get != undefined && get.contains("=")){
-          get = get.split("=");
-          if(get[0] == "mapName")
-            mapName = get[1];
-        }
+    function getReq(variable){
+      var query = window.location.search.substring(1);
+      var vars = query.split("&");
+      for (var i=0; i<vars.length; i++){
+        var pair = vars[i].split("=");
+        if(pair[0] == variable)
+          return pair[1];
       }
+      return(false);
+    }
+
+    $(document).ready(function(){
+      var mapName = getReq("mapName") ? getReq("mapName") : 0;
+      var mapboxId = getReq("mapboxId") ? getReq("mapboxId") : "mapbox.streets";
+      console.log("mapName: " + mapName);
+      console.log("mapboxId: " + mapboxId);
 
       $("#myMap").dlm({
         //"token": "pk.eyJ1IjoieXNoaW5jMjEiLCJhIjoidGlBSzZEUSJ9.5Yq1DjgjbloJZe_TkJWVUA",
-        "mapboxId": "eleanor.ipncow29",
+        //"mapboxId": "eleanor.ipncow29",
+        "mapboxId": mapboxId,
         "dirData": dirData,
         "mapName": mapName
       });

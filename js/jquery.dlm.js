@@ -63,17 +63,9 @@
       _change($obj, target);
     }
 
-    function test($obj){
-      /*
-      var pointsList = _getDataList($obj, "dir", $.fn.dlm.options.mapName);
-      console.log(pointsList);
-      console.log("============");
-      var pointsList = _getDataList($obj, "image", pointsList[0]);
-      console.log(pointsList);
-      console.log("============");
-      var pointsList = _getDataList($obj, "mapName");
-      console.log(pointsList);
-      */
+    function getMapName($obj){
+      var mapNameList = _getDataList($obj, "mapName");
+      $obj.data("mapNameList", mapNameList);
     }
 
     /**
@@ -294,11 +286,12 @@
         });
       },
 
-      test: function() {
-        return this.each(function(){
-          console.log("test function");
-          test($(this));
+      getMapName: function(){
+        this.each(function(){
+          console.log("getMapName function");
+          getMapName($(this));
         });
+        return $(this).data("mapNameList");
       }
     };
 
