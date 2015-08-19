@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en" class="no-js">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<link rel="stylesheet" href="css/reset.css"> <!-- CSS reset -->
+	<link rel="stylesheet" href="css/index.css"> <!-- Resource style -->
+	<script src="./js/page-scroll-effects/modernizr.js"></script> <!-- Modernizr -->
+	<title>DLM - Scout 104</title>
+</head>
+<!-- hijacking: on/off - animation: none/scaleDown/rotate/gallery/catch/opacity/fixed/parallax -->
+
+<body class="container" data-hijacking="on" data-animation="opacity">
+	<section class="cd-section visible">
+		<div>
+			<h2>Page Scroll Effects</h2>
+		</div>
+	</section>
+
+	<nav style="position: absolute;z-index:999; top:2000px; background-color:yellow;">
+		<ul class="cd-vertical-nav">
+			<li><a href="#0" class="cd-prev inactive">Next</a></li>
+			<li><a href="#0" class="cd-next">Prev</a></li>
+		</ul>
+	</nav>
+</body>
+<script src="./js/jquery-2.1.4.js"></script>
+<script src="./js/page-scroll-effects/velocity.min.js"></script>
+<script src="./js/page-scroll-effects/velocity.ui.min.js"></script>
+<script src="./js/page-scroll-effects/main.js"></script> <!-- Resource jQuery -->
+
+<!-- for dlm setting -->
+<script src="./js/jquery.dlm.js"></script>
+<script src="./js/dirData.js"></script>
+<script type="text/javascript" charset="utf-8">
+  var dir = "photo";
+
+  $(".cd-section:first-child").find("div").css("background-image", "url(\"./" + dir + "/index.jpg" + "\")");
+  $(document).dlm({"dirData": dirData});
+  var mapNameList = $(document).dlm("getMapName");
+  for(var i in mapNameList){
+    console.log(mapNameList[i]);
+    $(".cd-section:last-of-type").after("<section class=\"cd-section\"><div><h2>" + mapNameList[i] + "</h2></div></section>");
+    $(".cd-section:last-of-type").find("div").css("background-image", "url(\"./" + dir + "/" + mapNameList[i] + "/index.jpg" + "\")");
+    break;
+  }
+
+  // TODO: nav to footer
+  // TODO: setTimeOut( changeImagesTn3; setTimeOut( faddeOut()) )
+
+</script>
+</html>

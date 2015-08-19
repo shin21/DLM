@@ -7,6 +7,9 @@ http://www.vandelaydesign.com/jquery-image-galleries/
     http://codyhouse.co/demo/page-scroll-effects/opacity-hijacking.html
     營火
 
+    http://www.thepetedesign.com/demos/onepage_scroll_demo.html
+    一般 page scroll
+
     整頁換頁效果
     http://alvarotrigo.com/pagePiling/#page2
 
