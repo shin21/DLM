@@ -25,6 +25,12 @@
 
       $obj.data("target", 0);
       $.fn.dlm.options = $.extend({}, _defaultOptions, options);
+
+      console.log("token:" + $.fn.dlm.options.token);
+      console.log("mapName: " + $.fn.dlm.options.mapName);
+      console.log("mapboxId: " + $.fn.dlm.options.mapboxId);
+      console.log("view: " + $.fn.dlm.options.view);
+      console.log("zoom: " + $.fn.dlm.options.zoom);
     }
 
     function show($obj){
@@ -75,6 +81,13 @@
     // _change
     function _change($obj, i){
       $obj.data("featureLayer").setFilter(function(p){
+        p.properties["marker-color"] = "#fc4353";
+        if(p.order == i){
+          var latlng = [p.geometry.coordinates[1], p.geometry.coordinates[0]];
+          $obj.data("map").panTo(latlng);
+          console.log("panTo: " + latlng);
+          p.properties["marker-color"] = "#4363fc";
+        }
         return p.order <= i;
       });
       console.log("target: " + i);

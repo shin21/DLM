@@ -44,11 +44,6 @@
       var lng = getReq("lng") ? getReq("lng") : 120.2735845;
       var view = [lat, lng];
       var zoom = getReq("zoom") ? getReq("zoom") : 11;
-      console.log("token:" + token);
-      console.log("mapName: " + mapName);
-      console.log("mapboxId: " + mapboxId);
-      console.log("view: " + view);
-      console.log("zoom: " + zoom);
 
       $("#myMap").dlm({
         "token": token,
