@@ -122,7 +122,8 @@
           for(var i in feature.imgList){
             imgSrc = "./" + options.dir + "/" + options.mapName + "/" + feature.imgList[i];
             imgs.push({
-              title: feature.imgList[i].split("/")[1],
+              title: feature.imgList[i].split("/")[0].split("-")[0],
+              description: feature.imgList[i].split("/")[1],
               thumb: imgSrc,
               img: imgSrc
             });
