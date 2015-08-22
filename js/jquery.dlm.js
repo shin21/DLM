@@ -81,12 +81,10 @@
     // _change
     function _change($obj, i){
       $obj.data("featureLayer").setFilter(function(p){
-        p.properties["marker-color"] = "#fc4353";
         if(p.order == i){
           var latlng = [p.geometry.coordinates[1], p.geometry.coordinates[0]];
           $obj.data("map").panTo(latlng);
           console.log("panTo: " + latlng);
-          p.properties["marker-color"] = "#4363fc";
         }
         return p.order <= i;
       });
