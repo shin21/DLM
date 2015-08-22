@@ -22,5 +22,13 @@
 
 注意照片只支援 jpg png bmp
 注意資料夾名稱不能有空白
+(google map 又見 這是哪裡？記得去掉空白)
 執行 getDir.bat (getDir.sh)
 
+
+index.jpg
+
+
+記得先在index.html 作些修正
+
+照片要順序的話在資料夾作編號

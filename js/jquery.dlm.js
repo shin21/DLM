@@ -15,9 +15,9 @@
       var _defaultOptions = {
         "token": "pk.eyJ1IjoibWFwYm94IiwiYSI6IlhHVkZmaW8ifQ.hAMX5hSW-QnTeRCMAy9A8Q",
         "mapboxId": "mapbox.streets",
-        "view": [22.9870689,120.2735845],
-        "zoom": 11,
         "mapName": "0",
+        "view": [22.9870689, 120.2735845],
+        "zoom": 11,
         "dir": "photo",
         "dirData": [],
         "infoId": "info"
@@ -83,6 +83,7 @@
     // _getGeoJSONData
     function _getGeoJSONData($obj){
       var pointsList = _getDataList($obj, "dir", $.fn.dlm.options.mapName);
+      console.log($.fn.dlm.options.mapName);
       var json = [];
       for(var i in pointsList){
         json.push(_getGeoJSONPoint($obj, pointsList[i], parseInt(i)));
@@ -98,63 +99,66 @@
       // when click a marker
       featureLayer.on("click",function(e){
         e.layer.closePopup();
-
+        $(".info").fadeOut(250);
         var info = document.getElementById(options.infoId);
 
-        // find images of new point(marker)
-        var imgs = [];
-        var feature = e.layer.feature;
-        for(var i in feature.imgList){
-          imgSrc = "./" + options.dir + "/" + options.mapName + "/" + feature.imgList[i];
-          imgs.push({
-            title: feature.imgList[i].split("/")[1],
-            thumb: imgSrc,
-            img: imgSrc
-          });
-        }
-
-        // build tn3
-        var $mytn3 = $(".info").tn3({
-          skinDir: "skins",
-          delay: 2000,
-          image: {
-            maxZoom: 1.5,
-            crop: true,
-            clickEvent: "click",
-            transitions: [
-              {
-                type: "blinds",
-              },
-              {
-                type: "grid"
-              },
-              {
-                type: "grid",
-                duration: 460,
-                easing: "easeInQuad",
-                gridX: 1,
-                gridY: 8,
-                // flat, diagonal, circle, random
-                sort: "random",
-                sortReverse: false,
-                diagonalStart: "bl",
-                // fade, scale
-                method: "scale",
-                partDuration: 360,
-                partEasing: "easeOutSine",
-                partDirection: "left"
-              }
-            ]
-          },
-
-          init_start: function(e) {
-            e.source.data = [{
-              imgs: imgs
-            }];
+        setTimeout(function(){
+          // find images of new point(marker)
+          var imgs = [];
+          var feature = e.layer.feature;
+          for(var i in feature.imgList){
+            imgSrc = "./" + options.dir + "/" + options.mapName + "/" + feature.imgList[i];
+            imgs.push({
+              title: feature.imgList[i].split("/")[1],
+              thumb: imgSrc,
+              img: imgSrc
+            });
           }
-        }).data("tn3");
 
-        $(info).fadeIn("slow");
+          // build tn3
+          var $mytn3 = $(".info").tn3({
+            skinDir: "skins",
+            delay: 2000,
+            image: {
+              maxZoom: 1.5,
+              crop: true,
+              clickEvent: "click",
+              transitions: [
+                {
+                  type: "blinds",
+                },
+                {
+                  type: "grid"
+                },
+                {
+                  type: "grid",
+                  duration: 460,
+                  easing: "easeInQuad",
+                  gridX: 1,
+                  gridY: 8,
+                  // flat, diagonal, circle, random
+                  sort: "random",
+                  sortReverse: false,
+                  diagonalStart: "bl",
+                  // fade, scale
+                  method: "scale",
+                  partDuration: 360,
+                  partEasing: "easeOutSine",
+                  partDirection: "left"
+                }
+              ]
+            },
+
+            init_start: function(e) {
+              e.source.data = [{
+                imgs: imgs
+              }];
+            }
+          }).data("tn3");
+
+          $(info).fadeIn(500);
+        }, 250);
+
       });
 
       // when touch other place
@@ -230,8 +234,7 @@
           "title": ptrArr[0],
           "description": point,
           "marker-color": "#fc4353",
-          "marker-size": "large",
-          "marker-symbol": "monument"
+          "marker-size": "large"
         },
         "imgList": imgList,
         "order": order

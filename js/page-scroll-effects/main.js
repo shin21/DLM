@@ -41,6 +41,7 @@ jQuery(document).ready(function($){
 			prevArrow.on('click', prevSection);
     		nextArrow.on('click', nextSection);
     		
+        /*
     		$(document).on('keydown', function(event){
 				if( event.which=='40' && !nextArrow.hasClass('inactive') ) {
 					event.preventDefault();
@@ -50,6 +51,7 @@ jQuery(document).ready(function($){
 					prevSection();
 				}
 			});
+      */
 			//set navigation arrows visibility
 			checkNavigation();
 		} else if( MQ == 'mobile' ) {

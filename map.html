@@ -15,11 +15,11 @@
   <!-- tn3 -->
   <link type="text/css" rel="stylesheet" href="./skins/tn3/tn3.css"></link>
   <script type="text/javascript" src="js/tn3/jquery.tn3lite.min.js"></script>
-
+	<title>DLM - Draw Life Map</title>
 </head>
 <body>
-  <button id="previous" class="button">previous</button>
-  <button id="next" class="button">next</button>
+  <button id="previous" class="button">&lt;&lt;</button>
+  <button id="next" class="button">&gt;&gt;</button>
 
   <div id="myMap"></div>
   <div id="info" class="info"></div>
@@ -30,24 +30,33 @@
       var vars = query.split("&");
       for (var i=0; i<vars.length; i++){
         var pair = vars[i].split("=");
-        if(pair[0] == variable)
+        if(pair[0] == variable && pair[1] != "undefined")
           return pair[1];
       }
       return(false);
     }
 
     $(document).ready(function(){
-      var mapName = getReq("mapName") ? getReq("mapName") : 0;
+      var token = getReq("token") ? getReq("token") : "pk.eyJ1IjoibWFwYm94IiwiYSI6IlhHVkZmaW8ifQ.hAMX5hSW-QnTeRCMAy9A8Q";
       var mapboxId = getReq("mapboxId") ? getReq("mapboxId") : "mapbox.streets";
+      var mapName = getReq("mapName") ? unescape(getReq("mapName")) : 0;
+      var lat = getReq("lat") ? getReq("lat") : 22.9870689;
+      var lng = getReq("lng") ? getReq("lng") : 120.2735845;
+      var view = [lat, lng];
+      var zoom = getReq("zoom") ? getReq("zoom") : 11;
+      console.log("token:" + token);
       console.log("mapName: " + mapName);
       console.log("mapboxId: " + mapboxId);
+      console.log("view: " + view);
+      console.log("zoom: " + zoom);
 
       $("#myMap").dlm({
-        //"token": "pk.eyJ1IjoieXNoaW5jMjEiLCJhIjoidGlBSzZEUSJ9.5Yq1DjgjbloJZe_TkJWVUA",
-        //"mapboxId": "eleanor.ipncow29",
+        "token": token,
         "mapboxId": mapboxId,
+        "mapName": mapName,
+        "view": view,
+        "zoom": zoom,
         "dirData": dirData,
-        "mapName": mapName
       });
       $("#myMap").dlm("show");
 
@@ -57,8 +66,8 @@
       $("#info").fadeOut();
     });
 
-    document.getElementById("previous").addEventListener("click", function(){$("#myMap").dlm("previous")});
-    document.getElementById("next").addEventListener("click", function(){$("#myMap").dlm("next")});
+    $("#previous").click(function(){$("#myMap").dlm("previous")});
+    $("#next").click(function(){$("#myMap").dlm("next")});
   </script>
 </body>
 </html>
