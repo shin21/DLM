@@ -2,7 +2,9 @@ DLM - Draw Life Map
 ===================
 
 一個將地圖結合相簿來呈現照片的網頁。
+
 以前常去很多地方拍很多照片，但發現只把照片分成很多個資料夾放，實在無法呈現出那種征服(?)很多地方的感覺。
+
 像是環島，我們會希望依照在每個鄉鎮拍的照片，標記在地圖對應的地理位置上呈現，這樣的話看地圖上很多地方都被我標記過，感覺就很爽！
 
 ![](./screenshot/screenshot1.png)
@@ -65,21 +67,29 @@ Optional
 --------
 
 - 在地圖內可點擊右上方 `<<` 和 `>>` 來增減呈現的相簿
-想要依照特殊排序的話，只要在建立相簿資料夾上作編號即可
-> 1.奇美博物館-22.9347833,120.2260679
-> 2.台南夕陽-22.976125,120.144791
+
+    想要依照特殊排序的話，只要在建立相簿資料夾上作編號即可
+    > 1.奇美博物館-22.9347833,120.2260679
+    >
+    > 2.台南夕陽-22.976125,120.144791
 
 - custom options
-編輯 index.html，裡面從 `/* custom options */` 開始，可以設定
+
+    編輯 index.html，裡面從 `/* custom options */` 開始，可以設定
     - dir
+
         字串，讀取的照片的位置，預設為 photo，若要更改還需改 shell script，不建議修改
     - token
+
         字串，讀取 mapbox api 所需的 token，可自行辦 mapbox 帳號使用自己的 token
     - mapboxIdList
+
         字串陣列，裡面代表每個地圖所要用的 mapbox id，官方風格的 id 可以從[這裡](https://www.mapbox.com/maps/)取得
     - view
+
         陣列，儲存的值是一個經緯度的陣列 [lat, lng]，代表每個地圖最初讀取時的的中心位置
     - zoom
+
         整數，代表地圖最初讀取時的縮放大小
 
 Future Work
@@ -94,14 +104,25 @@ Source
 照片出處
 
 [./photo/index.jpg](https://www.flickr.com/photos/balmung1983/8527454205/)
+
 [./photo/台北/index.jpg](https://www.flickr.com/photos/kyleme/2153452223/)
+
 [./photo/台北/101-25.0339031,121.5645098/19472808621_32a2010a89_k.jpg](https://www.flickr.com/photos/tsaiian/19472808621/)
+
 [./photo/台北/101-25.0339031,121.5645098/3189962915_38767a4c0a_b.jpg](https://www.flickr.com/photos/jaako/3189962915/)
+
 [./photo/台北/淡水-25.182295,121.410882/14111227162_177a03c9f5_h.jpg](https://www.flickr.com/photos/55968326@N08/14111227162/)
+
 [./photo/台北/淡水-25.182295,121.410882/18163646668_d9b1349398_h.jpg](https://www.flickr.com/photos/eternal_ray/18163646668/)
+
 [./photo/台北/淡水-25.182295,121.410882/623489688_e0728ce64b_b.jpg](https://www.flickr.com/photos/neojet0411/623489688/)
+
 [./photo/台南/index.jpg](https://www.flickr.com/photos/eternal_ray/12483269983/)
+
 [./photo/台南/1.奇美博物館-22.9347833,120.2260679/16759873746_bf327153ce_h.jpg](https://www.flickr.com/photos/hcj0416/16759873746/)
+
 [./photo/台南/2.台南夕陽-22.976125,120.144791/14457208178_6177f0508d_h.jpg](https://www.flickr.com/photos/eternal_ray/14457208178/)
+
 [./photo/台南/3.北門水晶教堂-23.2640082,120.1227249/19366470194_1f29a6d371_h.jpg](https://www.flickr.com/photos/p930802/19366470194/)
+
 [./photo/台南/4.十鼓文化村-22.9393017,120.2299523/13687300865_c1785108b1_h.jpg](https://www.flickr.com/photos/speedbug/13687300865/)
