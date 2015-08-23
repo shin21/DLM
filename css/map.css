@@ -19,7 +19,6 @@ body{
 }
 .list .item{
   display: block;
-  border-bottom: 1px solid #eee;
   padding: 5px;
   margin: 0px;
   text-decoration: none;

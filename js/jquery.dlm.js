@@ -101,7 +101,7 @@
         // list marker
         var link = document.createElement("p");
         link.className = "item";
-        link.innerHTML = marker.feature.order + ". " + marker.feature.properties["title"];
+        link.innerHTML = marker.feature.properties["title"];
         link.onclick = function(){
           $obj.data("map").panTo(marker.getLatLng());
           $($.fn.dlm.options.infoId).fadeOut();
@@ -111,12 +111,11 @@
         // find target marker and panTo it
         if(marker.feature.order == i){
           $obj.data("map").panTo(marker.getLatLng());
-          $($.fn.dlm.options.infoId).fadeOut();
           console.log("panTo: " + marker.getLatLng());
         }
-
       });
 
+      $($.fn.dlm.options.infoId).fadeOut();
       console.log("target: " + i);
     }
 
@@ -331,6 +330,7 @@
         });
       },
 
+      // not used
       listAll: function(){
         return this.each(function(){
           console.log("listAll function");
