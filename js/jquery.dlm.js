@@ -88,31 +88,35 @@
 
     // _change
     function _change($obj, i){
-      var rows = 10;
-      var cols = 5;
       var listId = $.fn.dlm.options.listId;
       $(listId).text("");
 
+      // filter the markers that order small than i
       $obj.data("featureLayer").setFilter(function(p){
-        // list marker
-        if(p.order <= i){
-          var title = p.order + ". " + p.properties["title"];
-          $(listId).append(title + "\n");
-          cols = (title.length-7 > cols) ? title.length-7 : cols;
-        }
-
-        // find target marker and panTo it
-        if(p.order == i){
-          var latlng = [p.geometry.coordinates[1], p.geometry.coordinates[0]];
-          $obj.data("map").panTo(latlng);
-          console.log("panTo: " + latlng);
-        }
-
         return p.order <= i;
       });
 
-      $(listId).attr("rows", rows);
-      $(listId).attr("cols", cols);
+      // those markers' order >= i
+      $obj.data("featureLayer").eachLayer(function(marker){
+        // list marker
+        var link = document.createElement("p");
+        link.className = "item";
+        link.innerHTML = marker.feature.order + ". " + marker.feature.properties["title"];
+        link.onclick = function(){
+          $obj.data("map").panTo(marker.getLatLng());
+          $($.fn.dlm.options.infoId).fadeOut();
+        }
+        $(listId).append(link);
+
+        // find target marker and panTo it
+        if(marker.feature.order == i){
+          $obj.data("map").panTo(marker.getLatLng());
+          $($.fn.dlm.options.infoId).fadeOut();
+          console.log("panTo: " + marker.getLatLng());
+        }
+
+      });
+
       console.log("target: " + i);
     }
 
