@@ -3,6 +3,19 @@ body{
   padding: 0;
 }
 
+.list{
+  z-index: 90;
+  position: absolute;
+  top: 80px;
+  left: 10px;
+  font-size: 17px;
+  color: black;
+  background-color: rgba(180, 180, 180, 0.5);
+  border-radius: 10px;
+  padding: 5px;
+  resize: none;
+}
+
 .info{
   z-index: 100;
   position: absolute;

@@ -20,10 +20,12 @@
         "zoom": 11,
         "dir": "photo",
         "dirData": [],
-        "infoId": "info"
+        "infoId": "#info",
+        "listId": "#list"
       };
 
-      $obj.data("target", 0);
+      // easy for end user, the order start with 1
+      $obj.data("target", 1);
       $.fn.dlm.options = $.extend({}, _defaultOptions, options);
 
       console.log("token:" + $.fn.dlm.options.token);
@@ -54,7 +56,7 @@
     }
 
     function next($obj){
-      var max = $obj.data("pointsNum") - 1;
+      var max = $obj.data("pointsNum");
       var target = $obj.data("target");
       target = (++target > max) ? max : target;
       $obj.data("target", target);
@@ -62,11 +64,17 @@
     }
 
     function previous($obj){
-      var min = -1;
+      var min = 0;
       var target = $obj.data("target");
       target = (--target < min) ? min : target;
       $obj.data("target", target);
       _change($obj, target);
+    }
+    
+    function listAll($obj) {
+      var max = $obj.data("pointsNum") - 1;
+      $obj.data("target", max);
+      _change($obj, max);
     }
 
     function getMapName($obj){
@@ -80,14 +88,31 @@
 
     // _change
     function _change($obj, i){
+      var rows = 10;
+      var cols = 5;
+      var listId = $.fn.dlm.options.listId;
+      $(listId).text("");
+
       $obj.data("featureLayer").setFilter(function(p){
+        // list marker
+        if(p.order <= i){
+          var title = p.order + ". " + p.properties["title"];
+          $(listId).append(title + "\n");
+          cols = (title.length-7 > cols) ? title.length-7 : cols;
+        }
+
+        // find target marker and panTo it
         if(p.order == i){
           var latlng = [p.geometry.coordinates[1], p.geometry.coordinates[0]];
           $obj.data("map").panTo(latlng);
           console.log("panTo: " + latlng);
         }
+
         return p.order <= i;
       });
+
+      $(listId).attr("rows", rows);
+      $(listId).attr("cols", cols);
       console.log("target: " + i);
     }
 
@@ -97,7 +122,9 @@
       console.log($.fn.dlm.options.mapName);
       var json = [];
       for(var i in pointsList){
-        json.push(_getGeoJSONPoint($obj, pointsList[i], parseInt(i)));
+        // easy for end user, the order start with 1
+        var order = parseInt(i) + 1;
+        json.push(_getGeoJSONPoint($obj, pointsList[i], order));
       }
       
       $obj.data("pointsNum", json.length);
@@ -110,8 +137,7 @@
       // when click a marker
       featureLayer.on("click",function(e){
         e.layer.closePopup();
-        $(".info").fadeOut(250);
-        var info = document.getElementById(options.infoId);
+        $(options.infoId).fadeOut(250);
 
         setTimeout(function(){
           // find images of new point(marker)
@@ -120,7 +146,7 @@
           for(var i in feature.imgList){
             imgSrc = "./" + options.dir + "/" + options.mapName + "/" + feature.imgList[i];
             imgs.push({
-              title: feature.imgList[i].split("/")[0].split("-")[0],
+              title: _splitLast(feature.imgList[i].split("/")[0], "-")[0],
               description: feature.imgList[i].split("/")[1],
               thumb: imgSrc,
               img: imgSrc
@@ -128,7 +154,7 @@
           }
 
           // build tn3
-          var $mytn3 = $(".info").tn3({
+          var $mytn3 = $(options.infoId).tn3({
             skinDir: "skins",
             delay: 2000,
             image: {
@@ -168,15 +194,14 @@
             }
           }).data("tn3");
 
-          $(info).fadeIn(500);
+          $(options.infoId).fadeIn(500);
         }, 250);
 
       });
 
       // when touch other place
       map.on("click", function(){
-        var info = document.getElementById(options.infoId);
-        $(info).fadeOut();
+        $(options.infoId).fadeOut();
       });
     }
 
@@ -246,7 +271,8 @@
           "title": ptrArr[0],
           "description": point,
           "marker-color": "#fc4353",
-          "marker-size": "large"
+          "marker-size": "large",
+          "marker-symbol": order
         },
         "imgList": imgList,
         "order": order
@@ -298,6 +324,13 @@
         return this.each(function(){
           console.log("previous function");
           previous($(this));
+        });
+      },
+
+      listAll: function(){
+        return this.each(function(){
+          console.log("listAll function");
+          listAll($(this));
         });
       },
 
