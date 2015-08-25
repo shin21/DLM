@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset=utf-8 />
+  <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+  <!-- general css -->
+  <link type="text/css" rel="stylesheet" href="./css/map.css"></link>
+  <!-- mapbox -->
+  <script src="https://api.tiles.mapbox.com/mapbox.js/v2.2.1/mapbox.js"></script>
+  <link href="https://api.tiles.mapbox.com/mapbox.js/v2.2.1/mapbox.css" rel="stylesheet" />
+  <!-- DLM -->
+  <script src="./js/jquery-2.1.4.js"></script>
+  <script src="./js/jquery.dlm.js"></script>
+  <script src="./js/dirData.js"></script>
+  <!-- tn3 -->
+  <link type="text/css" rel="stylesheet" href="./skins/tn3/tn3.css"></link>
+  <script type="text/javascript" src="js/tn3/jquery.tn3lite.min.js"></script>
+	<title>DLM - Draw Life Map</title>
+</head>
+<body>
+  <button id="previous" class="button">&lt;&lt;</button>
+  <button id="next" class="button">&gt;&gt;</button>
+
+  <div id="myMap"></div>
+  <div id="list" class="list"></div>
+  <div id="info" class="info"></div>
+
+  <script type="text/javascript" charset="utf-8">
+    function getReq(variable){
+      var query = window.location.search.substring(1);
+      var vars = query.split("&");
+      for (var i=0; i<vars.length; i++){
+        var pair = vars[i].split("=");
+        if(pair[0] == variable && pair[1] != "undefined")
+          return pair[1];
+      }
+      return(false);
+    }
+
+    $(document).ready(function(){
+      var token = getReq("token") ? getReq("token") : "pk.eyJ1IjoibWFwYm94IiwiYSI6IlhHVkZmaW8ifQ.hAMX5hSW-QnTeRCMAy9A8Q";
+      var mapboxId = getReq("mapboxId") ? getReq("mapboxId") : "mapbox.streets";
+      var mapName = getReq("mapName") ? unescape(getReq("mapName")) : 0;
+      var lat = getReq("lat") ? getReq("lat") : 22.9870689;
+      var lng = getReq("lng") ? getReq("lng") : 120.2735845;
+      var view = [lat, lng];
+      var zoom = getReq("zoom") ? getReq("zoom") : 11;
+
+      $("#myMap").dlm({
+        "token": token,
+        "mapboxId": mapboxId,
+        "mapName": mapName,
+        "view": view,
+        "zoom": zoom,
+        "dirData": dirData,
+      });
+      $("#myMap").dlm("show");
+
+      var $mytn3 = $(".info").tn3({
+        init_start:function(e){}
+      }).data("tn3");
+      $("#info").fadeOut();
+    });
+
+    $("#previous").click(function(){$("#myMap").dlm("previous")});
+    $("#next").click(function(){$("#myMap").dlm("next")});
+  </script>
+</body>
+</html>
+

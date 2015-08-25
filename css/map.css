@@ -1,0 +1,55 @@
+body{
+  margin: 0;
+  padding: 0;
+}
+
+.list{
+  z-index: 90;
+  top: 80px;
+  left: 10px;
+  position: absolute;
+  max-width: 300px;
+  max-height: 340px;
+  border-radius: 5px;
+  font-size: 17px;
+  overflow: auto;
+  color: black;
+  background-color: rgba(180, 180, 180, 0.5);
+  padding: 5px;
+}
+.list .item{
+  display: block;
+  padding: 5px;
+  margin: 0px;
+  text-decoration: none;
+  border: none;
+}
+.list .item:hover{
+  background:#f8f8f8;
+  cursor: pointer;
+}
+
+.info{
+  z-index: 100;
+  position: absolute;
+  top: 80px;
+  right: 20px;
+}
+
+.button{
+  z-index: 100;
+  position: absolute;
+  height: 30px;
+  width: 50px;
+}
+
+#previous{
+  top: 20px;
+  right: 90px;
+}
+
+#next{
+  top: 20px;
+  right: 20px;
+}
+

@@ -1,0 +1,71 @@
+<!doctype html>
+<html class="no-js">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- CSS reset -->
+	<link rel="stylesheet" href="css/reset.css">
+  <!-- Resource style -->
+	<link rel="stylesheet" href="css/index.css">
+  <!-- Modernizr -->
+	<script src="./js/page-scroll-effects/modernizr.js"></script>
+	<title>DLM - Draw Life Map</title>
+</head>
+
+<!-- hijacking: on/off - animation: none/scaleDown/rotate/gallery/catch/opacity/fixed/parallax -->
+<body class="container" data-hijacking="on" data-animation="opacity">
+	<section class="cd-section visible">
+		<div>
+			<h2>Draw Life Map</h2>
+		</div>
+	</section>
+
+  <ul class="cd-vertical-nav">
+    <li><a href="#0" class="cd-prev inactive">Next</a></li>
+    <li><a href="#0" class="cd-next">Prev</a></li>
+  </ul>
+
+</body>
+<script src="./js/jquery-2.1.4.js"></script>
+<!-- for dlm setting -->
+<script src="./js/jquery.dlm.js"></script>
+<script src="./js/dirData.js"></script>
+<script type="text/javascript" charset="utf-8">
+  $(document).ready(function(){
+
+    /* custom options */
+    var dir = "photo";
+    var token = "pk.eyJ1IjoieXNoaW5jMjEiLCJhIjoiN2I1MjUyZGQxZGY3MmU2M2MyMmY4ODQyOWVmNGNhMzIifQ.I3HXWgtjHSgeIH-fDAUSiQ";
+    var mapboxIdList = ["mapbox.pirates", "mapbox.streets-satellite", "eleanor.ipncow29"];
+    var view = [
+      [], [25.0798453,121.5200575]
+    ];
+    var zoom = 11;
+
+
+    $(document).dlm({"dirData": dirData});
+    var mapNameList = $(document).dlm("getMapName");
+
+    $(".cd-section:first-child").find("div").css("background-image", "url(\"./" + dir + "/index.jpg" + "\")");
+    for(var i in mapNameList){
+      if(i >= mapboxIdList.length){
+        mapboxIdList[i] = "";
+      }
+      if(i >= view.length){
+        view[i] = [];
+      }
+      $(".cd-section:last-of-type").after(
+          "<section class=\"cd-section\" onclick=\"window.location.href=\'./map.html?token=" + token + "&mapName=" + escape(mapNameList[i]) + "&mapboxId=" + mapboxIdList[i] + "&lat=" + view[i][0] + "&lng=" + view[i][1] + "&zoom=" + zoom + 
+          "\'\"><div><h2>" + mapNameList[i] + "</h2></div></section>");
+      $(".cd-section:last-of-type").find("div").css("background-image", "url(\"./" + dir + "/" + mapNameList[i] + "/index.jpg" + "\")");
+      $('.cd-section:last-of-type').css('cursor', 'pointer');
+    }
+  });
+</script>
+
+<script src="./js/page-scroll-effects/velocity.min.js"></script>
+<script src="./js/page-scroll-effects/velocity.ui.min.js"></script>
+<!-- Resource jQuery -->
+<script src="./js/page-scroll-effects/main.js"></script>
+</html>
